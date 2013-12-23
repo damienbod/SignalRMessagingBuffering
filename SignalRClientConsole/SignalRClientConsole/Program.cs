@@ -22,7 +22,7 @@ namespace SignalRClientConsole
 
                 if (key.ToUpper() == "I")
                 {
-                    spoolDataRepository.AddSignalRMessageDto(new SignalRMessageDto() { String1 = "tring1", String2 = "tring2", Int1 = 2, Int2 = 3 });
+                    spoolDataRepository.AddSignalRMessageDto(new SignalRMessageDto() { String1 = "tring1", String2 = "tring2", Int1 = 24, Int2 = 3 });
                 }
                 if (key.ToUpper() == "D")
                 {

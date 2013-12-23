@@ -76,7 +76,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SignalRSpool.sqlite" />
+    <None Include="SignalRSpool.sqlite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SignalRServerConsole\Damienbod.SignalR.IHubSync.Client\Damienbod.SignalR.IHubSync.Client.csproj">
