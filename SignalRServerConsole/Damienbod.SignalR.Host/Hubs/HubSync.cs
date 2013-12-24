@@ -16,12 +16,18 @@ namespace Damienbod.SignalR.Host.Hubs
             _slabLogger = slabLogger;
         }
 
-
         public void SendSignalRMessageDto(SignalRMessageDto message)
         {
-            Console.WriteLine("Server Recieved SignalRMessageDto " + message.String1 + ", " + message.String2);
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending SendHelloObject " + message.String1 + " " + message.String2);
-            Clients.All.sendHelloObject(message);
+            Console.WriteLine("Server Recieved SendSignalRMessageDto " + message.String1 + ", " + message.String2);
+            _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending SendSignalRMessageDto " + message.String1 + " " + message.String2);
+            Clients.All.sendSignalRMessageDto(message);
+        }
+
+        public void RequestSpool()
+        {
+            Console.WriteLine("Server RequestSpool");
+            _slabLogger.Log(HubType.HubServerVerbose, "Server RequestSpool");
+            Clients.All.requestSpool();
         }
 
         public override Task OnConnected()

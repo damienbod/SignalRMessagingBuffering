@@ -3,11 +3,14 @@ using Damienbod.SignalR.IHubSync.Client;
 using Damienbod.SignalR.IHubSync.Client.Dto;
 using Microsoft.AspNet.SignalR.Client;
 using SignalRClientConsole.Logging;
+using SignalRClientConsole.Spool;
 
 namespace SignalRClientConsole.HubClients
 {
     public class MyHubClient : BaseHubClient, ISendHubSync, IRecieveHubSync
     {
+        public static bool SendSpool = false;
+
         public MyHubClient()
         {
             Init();
@@ -23,6 +26,7 @@ namespace SignalRClientConsole.HubClients
             base.Init();
 
             _myHubProxy.On<SignalRMessageDto>("SendSignalRMessageDto", Recieve_SendSignalRMessageDto);
+            _myHubProxy.On("RequestSpool", Recieve_RequestSpool);
 
             StartHubInternal();
         }
@@ -35,8 +39,13 @@ namespace SignalRClientConsole.HubClients
 
         public void Recieve_SendSignalRMessageDto(SignalRMessageDto message)
         {
-            Console.WriteLine("Recieved SignalRMessageDto " + message.String1 + ", " + message.String2);
-            HubClientEvents.Log.Informational("Recieved sendHelloObject " + message.String1 + ", " + message.String2);
+            Console.WriteLine("Recieved SendSignalRMessageDto " + message.String1 + ", " + message.String2);
+            HubClientEvents.Log.Informational("Recieved SendSignalRMessageDto " + message.String1 + ", " + message.String2);
+        }
+
+        public void Recieve_RequestSpool()
+        {
+            SendSpool = true;                       
         }
 
         public void SendSignalRMessageDto(SignalRMessageDto message)
@@ -50,6 +59,12 @@ namespace SignalRClientConsole.HubClients
 
             }).Wait();
             HubClientEvents.Log.Informational("Client sendHelloObject sent to server");
+        }
+
+        public void RequestSpool()
+        {
+            // only used on the server side
+            throw new NotImplementedException();
         }
     }
 }

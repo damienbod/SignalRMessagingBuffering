@@ -17,11 +17,17 @@ namespace Damienbod.SignalR.Host.Service
             _slabLogger = slabLogger;
             _hubContext = GlobalHost.ConnectionManager.GetHubContext<HubSync>(); 
         }
-        
-        public void SendSignalRMessageDto(SignalRMessageDto hello)
+
+        public void SendSignalRMessageDto(SignalRMessageDto message)
         {
-            _hubContext.Clients.All.SendSignalRMessageDto(hello);
-            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending sendHelloObject");
+            _hubContext.Clients.All.SendSignalRMessageDto(message);
+            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending SendSignalRMessageDto");
+        }
+
+        public void RequestSpool()
+        {
+            _hubContext.Clients.All.RequestSpool();
+            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending RequestSpool");
         }
     }
 }

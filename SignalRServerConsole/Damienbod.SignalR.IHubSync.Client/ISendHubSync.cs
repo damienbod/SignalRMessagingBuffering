@@ -4,6 +4,9 @@ namespace Damienbod.SignalR.IHubSync.Client
 {
     public interface ISendHubSync
     {
-        void SendSignalRMessageDto(SignalRMessageDto hello);
+        void SendSignalRMessageDto(SignalRMessageDto message);
+
+        void RequestSpool();
+
     }
 }

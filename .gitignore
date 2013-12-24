@@ -3,3 +3,8 @@ SignalRClientConsole/SignalRClientConsole/obj
 SignalRServerConsole/Damienbod.SignalR.IHubSync.Client/obj
 SignalRServerConsole/Damienbod.SignalR.IHubSync.Client/bin
 SignalRClientConsole/SignalRClientConsole.v12.suo
+SignalRServerConsole/Damienbod.SignalR.Host/bin
+SignalRServerConsole/Damienbod.SignalR.Host/obj
+SignalRServerConsole/Damienbod.Slab/obj
+SignalRServerConsole/Damienbod.Slab/bin
+SignalRServerConsole/SignalRMessaging.v12.suo
