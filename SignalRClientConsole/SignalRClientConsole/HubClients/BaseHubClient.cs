@@ -88,6 +88,11 @@ namespace SignalRClientConsole.HubClients
 
         void _hubConnection_Reconnected()
         {
+            if (State == ConnectionState.Connected)
+            {
+                Console.WriteLine("Connected to server");
+            }
+            
             HubClientEvents.Log.ClientEvents("_hubConnection_Reconnected New State:" + _hubConnection.State + " " + _hubConnection.ConnectionId);
         }
 

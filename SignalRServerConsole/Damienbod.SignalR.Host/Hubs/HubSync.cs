@@ -20,7 +20,7 @@ namespace Damienbod.SignalR.Host.Hubs
         {
             Console.WriteLine("Server Recieved SendSignalRMessageDto " + message.String1 + ", " + message.String2);
             _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending SendSignalRMessageDto " + message.String1 + " " + message.String2);
-            Clients.All.sendSignalRMessageDto(message);
+            Clients.Others.sendSignalRMessageDto(message);
         }
 
         public void RequestSpool()

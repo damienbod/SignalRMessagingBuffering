@@ -10,6 +10,7 @@ namespace SignalRClientConsole.HubClients
     public class MyHubClient : BaseHubClient, ISendHubSync, IRecieveHubSync
     {
         public static bool SendSpool = false;
+        public static int SpoolCount = 0;
 
         public MyHubClient()
         {
@@ -58,7 +59,7 @@ namespace SignalRClientConsole.HubClients
                 }
 
             }).Wait();
-            HubClientEvents.Log.Informational("Client sendHelloObject sent to server");
+            HubClientEvents.Log.Informational("Client SendSignalRMessageDto sent to server");
         }
 
         public void RequestSpool()

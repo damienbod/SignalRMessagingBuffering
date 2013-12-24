@@ -44,8 +44,8 @@ namespace Damienbod.SignalR.Host
                     {
                         var message = new SignalRMessageDto
                         {
-                            String1 = "String1 pushed direct from Server",
-                            String2 = "String2 pushed direct from Server"
+                            String1 = "String1 from Server",
+                            String2 = "String2 from Server"
                         };
                         _myHub.SendSignalRMessageDto(message);
                     }
