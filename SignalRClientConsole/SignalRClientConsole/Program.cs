@@ -10,7 +10,7 @@ namespace SignalRClientConsole
 {
     public class Program
     {
-        private static System.Timers.Timer aTimer;
+        private static Timer _aTimer;
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             if (MyHubClient.SendSpool)
@@ -25,15 +25,16 @@ namespace SignalRClientConsole
                         spoolDataRepository.RemoveSignalRMessageDto(spoolMessage.Id);
                         
                     }
+
+                    MyHubClient.SpoolCount = 0;
                 }
+
                 MyHubClient.SendSpool = false;
-                MyHubClient.SpoolCount = 0;
-                
             }
         }
 
-        static MyHubClient myHubClient = new MyHubClient();
-        static SpoolDataRepository spoolDataRepository = new SpoolDataRepository();
+        static readonly MyHubClient myHubClient = new MyHubClient();
+        static readonly SpoolDataRepository spoolDataRepository = new SpoolDataRepository();
 
         static void Main(string[] args)
         {
@@ -46,66 +47,66 @@ namespace SignalRClientConsole
             Console.WriteLine("X - close application");
             Console.WriteLine("----------------------");
             
-
-            aTimer = new System.Timers.Timer(10000);
-
-            // Hook up the Elapsed event for the timer.
-            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            _aTimer = new Timer(10000);
+            _aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             // Set the Interval to 2 seconds (2000 milliseconds).
-            aTimer.Interval = 2000;
-            aTimer.Enabled = true;
-    
-            
+            _aTimer.Interval = 2000;
+            _aTimer.Enabled = true;
+
             while (true)
             {
-                    string key = Console.ReadLine();
+                string key = Console.ReadLine();
 
-                    if (key.ToUpper() == "S")
+                if (key.ToUpper() == "S")
+                {
+                    if (myHubClient.State == ConnectionState.Connected && MyHubClient.SpoolCount <= 0)
                     {
-                        if (myHubClient.State == ConnectionState.Connected && MyHubClient.SpoolCount <= 0)
+                        var message = new SignalRMessageDto {String1 = "clientMessage String1", String2 = " ,String2"};
+                        myHubClient.SendSignalRMessageDto(message);
+                    }
+                    else
+                    {
+                        Console.WriteLine(" :no connection or spool not empty, adding message to spool");
+                        spoolDataRepository.AddSignalRMessageDto(new SignalRMessageDto()
                         {
-                            var message = new SignalRMessageDto { String1 = "clientMessage String1", String2 = " ,String2" };
-                            myHubClient.SendSignalRMessageDto(message);
-                        }
-                        else
-                        {
-                            Console.WriteLine(" :no connection or spool not empty, adding message to spool");
-                            spoolDataRepository.AddSignalRMessageDto(new SignalRMessageDto() { String1 = "client message: String1", String2 = " ,String2", Int1 = 3, Int2 = 3 });
-                            HubClientEvents.Log.Warning("Can't send message, connectionState= " + myHubClient.State);
-                            MyHubClient.SpoolCount++;
-                        }
+                            String1 = "client message: String1",
+                            String2 = " ,String2",
+                            Int1 = 3,
+                            Int2 = 3
+                        });
+                        HubClientEvents.Log.Warning("Can't send message, connectionState= " + myHubClient.State);
+                        MyHubClient.SpoolCount++;
+                    }
 
-                    }
-                    if (key.ToUpper() == "C")
-                    {
-                        myHubClient.CloseHub();
-                        Console.WriteLine(" :closing hub if opened");
-                        HubClientEvents.Log.Informational("Closed Hub");
-                    }
-                    if (key.ToUpper() == "N")
-                    {
-                        myHubClient.StartHub();
-                        Console.WriteLine(" :starting a new  hub if server exists");
-                        HubClientEvents.Log.Informational("Started the Hub");
-                    }
-                    if (key.ToUpper() == "X")
-                    {
-                        break;
-                    }
-                    if (key.ToUpper() == "H")
-                    {
-                        Console.WriteLine("----------------------");
-                        Console.WriteLine("H - Help");
-                        Console.WriteLine("S - Send message or add message to spool");
-                        Console.WriteLine("T - Close hub connection");
-                        Console.WriteLine("Z - Start new hub connection");
-                        Console.WriteLine("C - close application");
-                        Console.WriteLine("----------------------");
-                    }
- 
+                }
+                if (key.ToUpper() == "C")
+                {
+                    myHubClient.CloseHub();
+                    Console.WriteLine(" :closing hub if opened");
+                    HubClientEvents.Log.Informational("Closed Hub");
+                }
+                if (key.ToUpper() == "N")
+                {
+                    myHubClient.StartHub();
+                    Console.WriteLine(" :starting a new  hub if server exists");
+                    HubClientEvents.Log.Informational("Started the Hub");
+                }
+                if (key.ToUpper() == "X")
+                {
+                    break;
+                }
+                if (key.ToUpper() == "H")
+                {
+                    Console.WriteLine("----------------------");
+                    Console.WriteLine("H - Help");
+                    Console.WriteLine("S - Send message or add message to spool");
+                    Console.WriteLine("T - Close hub connection");
+                    Console.WriteLine("Z - Start new hub connection");
+                    Console.WriteLine("C - close application");
+                    Console.WriteLine("----------------------");
+                }
             }
-
         }
     }
 }
